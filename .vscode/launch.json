@@ -1,0 +1,28 @@
+{
+  "configurations": [    
+    {
+      "name": "Mine",
+      "preLaunchTask": "build",
+      "request": "launch",
+      "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",
+      "args":[
+        "<",
+        "${fileDirname}\\${fileBasenameNoExtension}.input"
+      ],
+      "type":"cppdbg",
+      "cwd":"."
+    },
+    {
+      "name": "Example",
+      "preLaunchTask": "build",
+      "request": "launch",
+      "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",
+      "args":[
+        "<",
+        "${fileDirname}\\${fileBasenameNoExtension}.example.input"
+      ],
+      "type":"cppdbg",
+      "cwd":"."
+    }
+  ]
+}
