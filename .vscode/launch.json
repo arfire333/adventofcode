@@ -23,6 +23,20 @@
       ],
       "type":"cppdbg",
       "cwd":"."
+    },
+    {
+      "name": "StatViewer",
+      "preLaunchTask": "build",
+      "request": "launch",
+      "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",      
+      "args":[        
+        "${fileDirname}\\example.json"
+      ],
+      "type":"cppdbg",
+      "cwd":".",
+      "MIMode": "gdb",
+      "externalConsole": false,
+      "serverLaunchTimeout": 1000
     }
   ]
 }

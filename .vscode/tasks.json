@@ -10,7 +10,8 @@
         "-g",
         "${fileDirname}\\${fileBasenameNoExtension}.cpp",
         "-o",
-        "${fileDirname}\\${fileBasenameNoExtension}.exe"
+        "${fileDirname}\\${fileBasenameNoExtension}.exe",
+        "-ljsoncpp"
       ],
       "options": {
         "cwd": "${fileDirname}"
