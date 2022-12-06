@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
       vector<int> idx(members.size(), 0);
       iota(idx.begin(), idx.end(), 0);    
       sort(idx.begin(), idx.end(), [&](int a, int b) { return timestamp[problem_number][a] < timestamp[problem_number][b]; });
-      
+      int rank=1;
       int start =
                 days_from_civil(2022, 12, problem_day) * 60 * 60 * 24 + 5 * 60 * 60;
       for (auto i : idx) {        
@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
           int hours = delta / (60 * 60);
           int minutes = (delta - hours * 60 * 60) / 60;
           if( hours < 24 ){
-            cout << setfill('0') << setw(2) << hours 
+            cout << rank++ << " " << setfill('0') << setw(2) << hours 
                 << ":" << setfill('0') << setw(2) << minutes
                 << ":" << setfill('0') << setw(2) << (delta % 60)   
                 << " " << members[i] <<"\n";
