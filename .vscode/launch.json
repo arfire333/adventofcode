@@ -4,39 +4,86 @@
       "name": "Mine",
       "preLaunchTask": "build",
       "request": "launch",
-      "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",
-      "args":[
-        "<",
-        "${fileDirname}\\${fileBasenameNoExtension}.input"
-      ],
       "type":"cppdbg",
-      "cwd":"."
+      "program": "",
+      "linux":{
+        "name":"Launch",
+        "request": "launch",        
+        "program":"${fileDirname}/${fileBasenameNoExtension}",
+        "args":[
+          "<",
+          "${fileDirname}/${fileBasenameNoExtension}.input"
+        ],
+        "type":"cppdbg",
+        "cwd":"."
+      },
+      "windows": {
+        "name":"Launch",
+        "request": "launch",
+        "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",
+        "args":[
+          "<",
+          "${fileDirname}\\${fileBasenameNoExtension}.input"
+        ],
+        "type":"cppdbg",
+        "cwd":"."  
+      },        
     },
     {
-      "name": "Example",
+      "name": "Example 1",
       "preLaunchTask": "build",
       "request": "launch",
-      "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",
-      "args":[
-        "<",
-        "${fileDirname}\\${fileBasenameNoExtension}.example.input"
-      ],
       "type":"cppdbg",
-      "cwd":"."
+      "program": "",
+      "linux":{
+        "name":"Launch",
+        "request": "launch",        
+        "program":"${fileDirname}/${fileBasenameNoExtension}",
+        "args":[
+          "<",
+          "${fileDirname}/${fileBasenameNoExtension}.example.input"
+        ],
+        "type":"cppdbg",
+        "cwd":"."
+      },
+      "windows": {
+        "name":"Launch",
+        "request": "launch",
+        "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",
+        "args":[
+          "<",
+          "${fileDirname}\\${fileBasenameNoExtension}.example.input"
+        ],
+        "type":"cppdbg",
+        "cwd":"."  
+      },        
     },
     {
       "name": "StatViewer",
       "preLaunchTask": "build",
       "request": "launch",
-      "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",      
-      "args":[        
-        "${fileDirname}\\example.json"
-      ],
       "type":"cppdbg",
-      "cwd":".",
-      "MIMode": "gdb",
-      "externalConsole": false,
-      "serverLaunchTimeout": 1000
+      "program": "",
+      "linux":{
+        "name":"Launch",
+        "request": "launch",        
+        "program":"${workspaceRoot}/2022/statviewer/statviewer",
+        "args":[          
+          "${workspaceRoot}/2022/statviewer/example.json"
+        ],
+        "type":"cppdbg",
+        "cwd":"."
+      },
+      "windows": {
+        "name":"Launch",
+        "request": "launch",
+        "program":"${workspaceRoot}\\2022\\statviewer\\statviewer.exe",
+        "args":[         
+          "${workspaceRoot}\\2022\\statviewer\\example.json"
+        ],
+        "type":"cppdbg",
+        "cwd":"."  
+      },        
     }
   ]
 }
