@@ -59,6 +59,35 @@
       },        
     },
     {
+      "name": "Testing",
+      "preLaunchTask": "build",
+      "request": "launch",
+      "type":"cppdbg",
+      "program": "",
+      "linux":{
+        "name":"Launch",
+        "request": "launch",        
+        "program":"${fileDirname}/${fileBasenameNoExtension}",
+        "args":[
+          "<",
+          "${fileDirname}/${fileBasenameNoExtension}.testing.input"
+        ],
+        "type":"cppdbg",
+        "cwd":"."
+      },
+      "windows": {
+        "name":"Launch",
+        "request": "launch",
+        "program":"${fileDirname}\\${fileBasenameNoExtension}.exe",
+        "args":[
+          "<",
+          "${fileDirname}\\${fileBasenameNoExtension}.testing.input"
+        ],
+        "type":"cppdbg",
+        "cwd":"."  
+      },        
+    },
+    {
       "name": "StatViewer",
       "preLaunchTask": "build",
       "request": "launch",
