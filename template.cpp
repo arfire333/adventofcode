@@ -6,25 +6,25 @@
 
 using namespace std;
 
-int problem_a(const vector<vector<int>> in){
+int problem_a(){
 
-  return in.size();
+  return 0;
 }
 
-int problem_b(const vector<vector<int>> in){
+int problem_b(){
 
-  return in.size();
+  return 0;
 }
 
 int main(int argc, char** argv){
-  vector<vector<int>> data;
-  // Get data
-  int i=0;
-  int j=0;
-  while( cin >> i >> j ){
-    data.push_back({i,j});
+    
+  string s;
+  while( getline(cin ,s)){
+    
   }
+  int ans1=problem_a();
+  int ans2=problem_b();
 
-  cout << "Part 1: " << problem_a(data) << "\n";
-  cout << "Part 2: " << problem_b(data) << "\n";
+  cout << "Part 1: " << problem_a() << "\n";
+  cout << "Part 2: " << problem_b() << "\n";
 }
