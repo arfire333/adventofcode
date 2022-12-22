@@ -40,5 +40,6 @@ if (NOT raylib_FOUND)
 endif()
 
 add_subdirectory( 2022/day_14/bonus )
+add_subdirectory( 2022/day_22/bonus )
 
 

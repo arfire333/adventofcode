@@ -1,84 +1,125 @@
+#include <Grid.h>
 #include <algorithm>
-#include <cassert>
 #include <iostream>
-#include <map>
-#include <set>
-#include <stdio.h>
-#include <string>
+#include <queue>
+#include <raylib.h>
 #include <vector>
 using namespace std;
-/**
- * Note.  This only presently works for cube
- * data presented in the following format.
- * 
- * Rows > Columns
- * +------+
- * |  1122|
- * |  1122|
- * |  33  |
- * |  33  |
- * |4455  |
- * |4455  |
- * |66    |
- * |66    |
- * +------+ 
- */
-class Grid {
-    vector<vector<char>> grid;
-    pair<int, int> start;
-    pair<int, int> current;
-    vector<pair<int, char>> commands;
-    char orientation;
-    int current_command = 0;
-    int current_command_progress = 0;
-    int N = 0;
+void Grid::draw_cube(const int SCALE) {
+    float BUFFER = 0.707;
+    DrawCube(Vector3(25 * SCALE, 25 * SCALE, 25 * SCALE), 48*SCALE,48*SCALE,48*SCALE, WHITE);
+    for (int r = 1; r + 1 < grid.size(); r++) {
+        for (int c = 1; c + 1 < grid[0].size(); c++) {
+            float x = 0;
+            float y = 0;
+            float z = 0;
+            float xSize = 2;
+            float ySize = 2;
+            float zSize = 2;
+            auto cubeColor = ColorFromHSV(((x + y + z) * SCALE), 0.75f, 0.9f);
+            cubeColor = GREEN;
+            float cubeSize = SCALE - 2;
+            int new_side = 0;
+            if (r > 3 * N) {
+                if (c <= N) { // Face 6
+                    z = N - c + 1;
+                    x = ((r - 1) % N) + 1;
+                    y = N;
+                    new_side = 6;
+                }
 
-    void parseCommands(const string &s);
-    void move_left();
-    void move_right();
-    void move_up();
-    void move_down();
-    void move_left_cube();
-    void move_right_cube();
-    void move_up_cube();
-    void move_down_cube();
-    void turn(char direction);
+            } else if (r > 2 * N) {
+                if (c <= N) { // Face 4
+                    z = N - c + 1;
+                    y = (r - 1) % N;
+                    x = 1;
+                    new_side = 4;
+                } else if (c > N && c <= 2 * N) { // Face 5
+                    z = 1;
+                    x = ((c - 1) % N) + 1;
+                    y = ((r - 1) % N) + 1;
+                    new_side = 5;
+                }
+            } else if (r > N) {
+                if (c > N && c < 2 * N) { // Face 3
+                    z = N - ((r - 1) % N);
+                    x = ((c - 1) % N) + 1;
+                    y = 0;
+                    new_side = 3;
+                }
+            } else {
+                if (c > N && c <= 2 * N) { // Face 1
+                    z = N;
+                    x = ((c - 1) % N) + 1;
+                    y = N - r;
+                    new_side = 1;
+                } else if (c > 2 * N) { // Face 2
+                    z = N - ((c - 1) % N);
+                    x = N;
+                    y = N - r;
+                    new_side = 2;
+                }
+            }
 
-  public:
-    enum Show {
-        GRID = 0,
-        START_POSITION = 1,
-        CURRENT_POSITION = 2,
-        BOTH_POSITIONS = 3
-    };
-    void print(const Show &show = GRID);
-    void printCommands();
-    void init(const vector<string> &in, const string &s);
-    void step();
-    void step_cube();
-    bool isDone() { return current_command >= commands.size(); }
-    int command() { return current_command; }
-    int password();
-};
+            if (grid[r][c] == '#') {
+                cubeColor = RED;         
+                zSize=4;
+                xSize=4;
+                ySize=4;
+            }
+            if (current.first == r && current.second == c) {
+                pos3d.x = x * SCALE;
+                pos3d.y = y * SCALE;
+                pos3d.z = z * SCALE;
+                cubeColor =ColorFromHSV(240,1,1);
+                
+                if (new_side == 1 || new_side == 5) {
+                    zSize = 8;
+                    ySize = 4;
+                    zSize = 4;
+                } else if (new_side == 6 || new_side == 3) {
+                    ySize = 8;
+                    zSize = 4;
+                    xSize = 4;
+                } else if (new_side == 2 || new_side == 4) {
+                    xSize = 8;
+                    ySize = 4;
+                    zSize = 4;
+                }
+
+                _side = new_side;
+            }
+            if (grid[r][c] == ' ') {
+                continue;
+            }
+            DrawCube(Vector3(x * SCALE, y * SCALE, z * SCALE), xSize, ySize,
+                     zSize, cubeColor);
+        }
+    }
+}
 void Grid::step_cube() {
     if (current_command >= commands.size()) {
         return; // Reached the end
     }
-    switch (orientation) {
-    case '>':
-        move_right_cube();
-        break;
-    case '<':
-        move_left_cube();
-        break;
-    case 'v':
-        move_down_cube();
-        break;
-    case '^':
-        move_up_cube();
-        break;
-    default:
-        break;
+    bool moved = false;
+    while (!moved &&
+           current_command_progress < commands[current_command].first) {
+        switch (orientation) {
+        case '>':
+            moved = move_right_cube();
+            break;
+        case '<':
+            moved = move_left_cube();
+            break;
+        case 'v':
+            moved = move_down_cube();
+            break;
+        case '^':
+            moved = move_up_cube();
+            break;
+        default:
+            break;
+        }
     }
     if (current_command_progress >= commands[current_command].first) {
         turn(commands[current_command].second);
@@ -112,83 +153,46 @@ void Grid::step() {
         current_command_progress = 0;
     }
 }
-int problem_a(Grid &grid) {
-    while (!grid.isDone()) {
-        grid.step();
-        // grid.print(Grid::Show::CURRENT_POSITION);
-    }
-    return grid.password();
-}
-
-int problem_b(Grid &grid) {
-    int last_command = -1;
-    while (!grid.isDone()) {
-        if (grid.command() != last_command) {
-            // grid.print(Grid::Show::CURRENT_POSITION);
-            int tmp=grid.command();
-            last_command = tmp;
-        }
-        grid.step_cube();
-
-    }
-    return grid.password();
-}
-
-int main(int argc, char **argv) {
-
-    string s;
-    vector<string> g;
-    bool more_grid = true;
-
-    while (more_grid) {
-        getline(cin, s);
-        if (s.size() > 0) {
-            g.push_back(s);
-        } else {
-            getline(cin, s);
-            more_grid = false;
-        }
-    }
-    Grid grida, gridb;
-    grida.init(g, s);
-    gridb.init(g, s);
-
-    int ans1 = problem_a(grida);
-    int ans2 = problem_b(gridb);
-
-    cout << "Part 1: " << ans1 << "\n";
-    cout << "Part 2: " << ans2 << "\n";
-}
 
 void Grid::init(const vector<string> &g, const string &commands) {
+
     parseCommands(commands);
+    pos3d.x = 50;
+    pos3d.y = 50;
+    pos3d.z = 50;
+
     size_t R = g.size() + 2;
     size_t C = 0;
     for (auto r : g) {
         C = max(C, r.size());
     }
-    N = C / 3;
-    cout << "N=" << N << "   C=" << C << "   R=" << R - 2 << "   R/3"
-         << (R - 2) / 3 << "\n";
+    if (C > R) { // example format
 
-    C = C + 2;
-    grid.resize(R, vector<char>(C, ' '));
-    bool looking_for_first = true;
-    int row = 1;
-    for (auto r : g) {
-        int col = 1;
-        for (auto c : r) {
-            if (looking_for_first && c == '.') {
-                start = {row, col};
-                looking_for_first = false;
+    } else {
+
+        N = C / 3;
+        cout << "N=" << N << "   C=" << C << "   R=" << R - 2 << "   R/3"
+             << (R - 2) / 3 << "\n";
+
+        C = C + 2;
+        grid.resize(R, vector<char>(C, ' '));
+        bool looking_for_first = true;
+        int row = 1;
+        for (auto r : g) {
+            int col = 1;
+            for (auto c : r) {
+                if (looking_for_first && c == '.') {
+                    start = {row, col};
+                    looking_for_first = false;
+                }
+                grid[row][col] = c;
+                col++;
             }
-            grid[row][col] = c;
-            col++;
+            row++;
         }
-        row++;
+        current = start;
+        orientation = '>';
     }
-    current = start;
-    orientation = '>';
 }
 void Grid::print(const Show &show) {
     cout << "+";
@@ -365,7 +369,7 @@ int Grid::password() {
  1->2 top facing down
  6->4 right facing left
  */
-void Grid::move_up_cube() {
+bool Grid::move_up_cube() {
     current_command_progress++;
     int r = current.first;
     int c = current.second;
@@ -373,7 +377,7 @@ void Grid::move_up_cube() {
     int nc = c;
     int no = orientation;
     if (grid[nr][c] == '#') {
-        return;
+        return false;
     }
     if (grid[nr][c] == ' ') {
         // wrapping
@@ -390,14 +394,15 @@ void Grid::move_up_cube() {
             nc = ((c - 1) % N) + 1;
         }
         if (grid[nr][nc] == '#') {
-            return;
+            return false;
         }
     }
     current.first = nr;
     current.second = nc;
     orientation = no;
+    return true;
 }
-void Grid::move_down_cube() {
+bool Grid::move_down_cube() {
     current_command_progress++;
     int r = current.first;
     int c = current.second;
@@ -405,7 +410,7 @@ void Grid::move_down_cube() {
     int nc = c;
     int no = orientation;
     if (grid[nr][c] == '#') {
-        return;
+        return false;
     }
     if (grid[nr][c] == ' ') {
         // wrapping
@@ -422,14 +427,15 @@ void Grid::move_down_cube() {
             no = '<';
         }
         if (grid[nr][nc] == '#') {
-            return;
+            return false;
         }
     }
     current.first = nr;
     current.second = nc;
     orientation = no;
+    return true;
 }
-void Grid::move_right_cube() {
+bool Grid::move_right_cube() {
     current_command_progress++;
     int r = current.first;
     int c = current.second;
@@ -437,7 +443,7 @@ void Grid::move_right_cube() {
     int nc = c + 1;
     int no = orientation;
     if (grid[r][nc] == '#') {
-        return;
+        return false;
     }
     if (grid[r][nc] == ' ') {
         // wrapping
@@ -459,14 +465,15 @@ void Grid::move_right_cube() {
             no = '<';
         }
         if (grid[nr][nc] == '#') {
-            return;
+            return false;
         }
     }
     current.first = nr;
     current.second = nc;
     orientation = no;
+    return true;
 }
-void Grid::move_left_cube() {
+bool Grid::move_left_cube() {
     current_command_progress++;
     int r = current.first;
     int c = current.second;
@@ -474,7 +481,7 @@ void Grid::move_left_cube() {
     int nc = c - 1;
     int no = orientation;
     if (grid[r][nc] == '#') {
-        return;
+        return false;
     }
     if (grid[r][nc] == ' ') {
         // wrapping
@@ -496,10 +503,11 @@ void Grid::move_left_cube() {
             no = '>';
         }
         if (grid[nr][nc] == '#') {
-            return;
+            return false;
         }
     }
     current.first = nr;
     current.second = nc;
     orientation = no;
+    return true;
 }
