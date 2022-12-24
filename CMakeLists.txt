@@ -8,17 +8,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 20)
 enable_testing()
-# include(GoogleTest)
 include(FetchContent)
-
-# FetchContent_Declare(
-#   googletest  
-#   GIT_REPOSITORY https://github.com/google/googletest.git 
-#   GIT_TAG release-1.12.1    
-# )
-
-# set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-# FetchContent_MakeAvailable(googletest)
 
 # Let CMake search for a raylib-config.cmake
 find_package(raylib 4.2 QUIET) 
@@ -41,5 +31,6 @@ endif()
 
 add_subdirectory( 2022/day_14/bonus )
 add_subdirectory( 2022/day_22/bonus )
+add_subdirectory( 2022/day_23/bonus )
 
 
