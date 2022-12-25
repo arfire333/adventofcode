@@ -55,9 +55,9 @@ void Grid::draw(int tick) {
     }
 
     auto E = path[tick % path.size()];
-    float x = E.first * scale + width_offset;
-    float y = E.second * scale + height_offset - elf.height/2;
-    DrawTexture(elf, x, y, WHITE);
+    float x = E.first * scale + width_offset-elf.width/2;
+    float y = E.second * scale + height_offset - elf.height;
+    DrawTextureEx(elf,Vector2(x,y),0,2,WHITE);
 }
 
 int Grid::findPathBFS(pair<int, int> cstart, pair<int, int> cdest, int startt) {

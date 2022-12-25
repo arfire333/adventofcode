@@ -10,10 +10,7 @@ main dependency.  Slightly more specific instructions are in
 the top level readme.
 
 ## Running
-Simply run the executable and pass it the filename of the data.
-Note that the path to the elf is hardcoded and relative to
-the executable.  Specifically `resources/elf.png`.  Running
-the debug test should handle everything for you using my
-data.
+Simply run the executable.  If desired pass it the filename
+to your data.
 
 

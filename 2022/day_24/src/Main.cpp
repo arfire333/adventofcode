@@ -72,11 +72,40 @@ const vector<string> MINE_IN = {
     {"#########################################################################"
      "###############################################.#"}};
 
+const vector<string> MINE_IN_SMALL = {
+    {"#.###############################################"},
+    {"#>v<^v>v^.^>vv<><>><^>^v^^vv.^v^^>^^^.^v^vv<<^v.#"},
+    {"#><^vvv^^vv>v>^>^^^.>^v.><<>^<v><^.>vv.<<.^^v<<<#"},
+    {"#<^v<v^<v<>>v^^^<v<^>^<.<<<^^^>>^<v^v>^>v<.^vv^>#"},
+    {"#>^<<.>^<>>v.v.>.v>vvv.><>v^^^><><v<>>v>.^<^.vv<#"},
+    {"#..><.>v<^v<<>v^<.<<^>v^<>^^><^.<><v<<v^^<<v<v<<#"},
+    {"#<^.<v>vv>^.v<.v^vv>^^<^.<>>>vv<<<.v>^<<vv<v><>>#"},
+    {"#>v<.v^>^^v..>v<vv^<v^v^>^><<.>>v<>v.<^v^^..v<v<#"},
+    {"#>.>.^.<^v>v^<v^.^v<vv.>^<.<.^>><>^^.>.>^^v>.^<<#"},
+    {"#>v><<<>v>.>.vv>.>v.^><^<.<v<^<>>.><<v^.v.<..<<>#"},
+    {"#<<<vv>>v>>>^><>^<^^.<>v>><<>v^<v>>.v^<><v<v<>v<#"},
+    {"#>^<vv<v^v<^..v.>vvv^^^>>>vvv.^<>>v<>>v>vv^v<>><#"},
+    {"#>^^>v^^>..<.>>v<.><^<>^>v.v>>><<vv>.>v>v^v<>>v<#"},
+    {"#<^v.v>>^^^<^><v.<^>^v<<><><<^v^vv<<^<^>^<.<<>>.#"},
+    {"#>^v<^^v>vv^.>>.v.vvvv.<<>v^^<^^v>>v><^v^<<<v^^<#"},
+    {"#>>.>>><v>>^.^>vv>^<^<<>^>.^<<<>>^<.<<<v<.<><^^>#"},
+    {"#<v>v^.v>><v<>^<.^^>>v>><v^v^<^^^.vv>vvv.^>>.^^<#"},
+    {"#><v<.^><<.^>>^v^^^<.>>^>v><<^.v^.<>v^>^^v<><v><#"},
+    {"#>v>^..<^^>^<^^^>.v><..<>^v^>.vv^<<<<>^v><>>><v>#"},
+    {"#>>>><<><<<>v<vvv^v^v<<^<v<<.^v>..v>v<<^><>v>>^>#"},
+    {"#<v>>^v<<^^vv>.>vv<>v>^<<^<^.vv<^<<v.<<v^<><><>>#"},
+    {"#><^>>vv<<^v<v.^<<^v>>.<^v>^>v>>.><v>^<v.v<>v<<<#"},
+    {"#><<<^.v^^>.v.vv^<<v<.^<^>>v^>^v<><>.>v^^vv><^^>#"},
+    {"#<<v.>.^v^<<v><<v<v>^>>^.<.><><>>^><^v>v<>>^^>v<#"},
+    {"#>>.^<.^>^.<^v..><v^v.><<^^v>^>v.<<<^^.>>.^v>>>>#"},
+    {"#>^<v^<><v^>.<<<>>.^.^><.vv><<vv<<><^<.>>vv^vv><#"},
+    {"###############################################.#"}};
+
 const int SCALE = 20;
 const int TARGET_FPS = 10;
 int main(int argc, char **argv) {
     Grid g;
-    g.init(MINE_IN, SCALE);
+    g.init(MINE_IN_SMALL, SCALE);
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     auto windowSize = g.windowSize();
@@ -91,15 +120,20 @@ int main(int argc, char **argv) {
 
     int tick=0;
     while (!WindowShouldClose()) {
-        tick++;
+        
+        if( tick == 0 ){
+            if( IsKeyPressed(KEY_SPACE) ){
+                tick++;
+            }
+        }else{
+            tick++;
+        }
         if( tick == g.minPathLength() ){
             tick=0;
         }
         BeginDrawing();
-        ClearBackground(BLACK);        
-        ss << tick << " of " << g.minPathLength() << "\n";        
-        g.draw(tick);
-        DrawText(ss.str().c_str(), (windowSize.x-SCALE*ss.str().size())/2,0,SCALE , BLACK);
+        ClearBackground(BLACK);                
+        g.draw(tick);        
         EndDrawing();
     }
 

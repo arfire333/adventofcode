@@ -33,4 +33,5 @@ add_subdirectory( 2022/day_14/bonus )
 add_subdirectory( 2022/day_22/bonus )
 add_subdirectory( 2022/day_23/bonus )
 add_subdirectory( 2022/day_24 )
+add_subdirectory( 2022/day_25 )
 
