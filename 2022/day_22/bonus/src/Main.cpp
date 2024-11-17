@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <math.h>
 using namespace std;
 void get_data(const string fn, Grid &g);
 int main(int argc, char **argv) {
@@ -27,10 +28,10 @@ int main(int argc, char **argv) {
     InitAudioDevice();
     SetTargetFPS(30);
     Camera3D camera = {0};
-    camera.position = Vector3(400.0f, 400.0f, 400.0f); // Camera position
-    camera.target = Vector3(0.0f, 0.0f, 0.0f);       // Camera looking at point
+    camera.position = (Vector3){400.0f, 400.0f, 400.0f}; // Camera position
+    camera.target = (Vector3){0.0f, 0.0f, 0.0f};       // Camera looking at point
     camera.up =
-        Vector3(0.0f, 1.0f, 0.0f); // Camera up vector (rotation towards target)
+        (Vector3){0.0f, 1.0f, 0.0f}; // Camera up vector (rotation towards target)
     camera.fovy = 60.0f;           // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE;
     CameraMode(CAMERA_FREE);
@@ -56,27 +57,27 @@ int main(int argc, char **argv) {
         switch (g.side()) {
         case 1:
             // camera.position = Vector3(400.0f, 400.0f, 400.0f); // Camera position
-            camera.up=Vector3( 0.0f, 1.0f, 0.0f);
+            camera.up=(Vector3){ 0.0f, 1.0f, 0.0f};
             break;
         case 2:
             // camera.position = Vector3(400.0f, 400.0f, 400.0f); // Camera position
-            camera.up=Vector3( 0.0f, 1.0f, 0.0f);
+            camera.up=(Vector3){ 0.0f, 1.0f, 0.0f};
             break;
         case 3:
             // camera.position = Vector3( p.x, p.y+1000, p.z);
-            camera.up=Vector3( 0.0f, 1.0f, 0.0f);
+            camera.up=(Vector3){ 0.0f, 1.0f, 0.0f};
             break;
         case 4:
             // camera.position = Vector3( p.x-400, p.y, p.z);
-            camera.up=Vector3( 0.0f, 1.0f, 0.0f);
+            camera.up=(Vector3){ 0.0f, 1.0f, 0.0f};
             break;
         case 5:
             // camera.position = Vector3( p.x, p.y, p.z-400);
-            camera.up=Vector3( 0.0f, 1.0f, 0.0f);
+            camera.up=(Vector3){0.0f, 1.0f, 0.0f};
             break;
         case 6:
             //  camera.position = Vector3(400.0f, 400.0f, 400.0f); // Camera position
-            camera.up=Vector3( 0.0f, 1.0f, 0.0f);
+            camera.up=(Vector3){ 0.0f, 1.0f, 0.0f};
             break;
         default:
         break;

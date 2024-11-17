@@ -7,7 +7,7 @@
 using namespace std;
 void Grid::draw_cube(const int SCALE) {
     float BUFFER = 0.707;
-    DrawCube(Vector3(25 * SCALE, 25 * SCALE, 25 * SCALE), 48*SCALE,48*SCALE,48*SCALE, WHITE);
+    DrawCube((Vector3){25.0f * SCALE, 25.0f * SCALE, 25.0f * SCALE}, 48*SCALE,48*SCALE,48*SCALE, WHITE);
     for (int r = 1; r + 1 < grid.size(); r++) {
         for (int c = 1; c + 1 < grid[0].size(); c++) {
             float x = 0;
@@ -92,7 +92,7 @@ void Grid::draw_cube(const int SCALE) {
             if (grid[r][c] == ' ') {
                 continue;
             }
-            DrawCube(Vector3(x * SCALE, y * SCALE, z * SCALE), xSize, ySize,
+            DrawCube((Vector3){x * SCALE, y * SCALE, z * SCALE}, xSize, ySize,
                      zSize, cubeColor);
         }
     }
